@@ -109,3 +109,16 @@ Sparsam, als Wegweiser: 🤖 📱➡️💻 ⏱️ 🎓 · 💾 (speichern) · �
 ---
 
 Beispiel nach diesem Guide: [beispiel-posts/2026-11-04_datacamp_fa.md](beispiel-posts/2026-11-04_datacamp_fa.md)
+
+---
+
+## 3. Ankündigungen / reine Info-Posts (@mgsina.tech, seit 2026-11-04)
+Für kostenlose Kurse, Lernangebote und Gratis-Aktionen, also „nur Information“. Lokaler Skill: `instagram-kurs-ankuendigung`.
+- **Cover:** dunkler, warmer Hintergrund mit **Orange** `#FF8A1F` (Strahlen, Neon-Ring, Glas-Icons), freigestelltes Foto des Nutzers groß in der Mitte, orange Tag-Pille oben („🚨 خبر فوری – از دستش ندید!“), Titel mit orangem Schlüsselwort, Datum als Magenta-Pille, Logo-Leiste „@mgsina.tech“ unten, FA-Badge oben links, „FREE“-Band.
+- **Video (4 Bilder):** Cover → Angebot → Frist → „💬 کامنت بذارید: <Stichwort>“ → Cover. **Kein Sprecher-Kreis**, das Foto nur auf dem Cover. Große Schrift, unter jedem Bild ein ganzer Satz. Ohne Aufnahme nur Musik (~20 s).
+- **Ton:** dringlich und umgangssprachlich (یه خبر خیلی مهم، عجله کنید، فرصت رو از دست ندید).
+- **CTA:** Stichwort kommentieren → Link per DM. Der Link steht nie im Video.
+- **Erster Kommentar:** Kursempfehlungen, 3 für Anfänger + 3 für Fortgeschrittene, Titel auf Englisch, Beschreibung kurz auf Persisch, Dauer.
+- **Posten:** als Reel, 5 Minuten später dasselbe Video als Story.
+
+Beispiel: `2026-11-04_reel_datacamp_fa.mp4` / `2026-11-04_cover_datacamp_fa.jpg`
