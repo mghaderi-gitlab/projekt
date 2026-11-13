@@ -4,3 +4,4 @@ Reel pipeline (needs: ffmpeg, python venv with mediapipe/opencv/openai-whisper, 
 3. anim.py out.mp4 "s1,...,s7" DURATION       -> animated backdrop
 4. compose.py face.mov model.tflite bg.mp4 0 anim.mp4 0.72  -> person cut-out over backdrop
 5. make_ass.py (captions/overlays), then ffmpeg ass + logo + voice.wav -> final mp4
+Logo: logo_mgsina.png (Canva 'Modern Tech Logo with Grid Emblem'), logo_mgsina_cut.png = keyed overlay version. Default Instagram account: mgsina.tech. Always add logo + Persian captions.
