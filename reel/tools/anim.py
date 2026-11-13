@@ -7,7 +7,7 @@ import numpy as np, cv2
 W, H, FPS = 1080, 1920, 30
 GREEN, RED, YEL, WHITE, GREY, BLUE = (34, 227, 107), (240, 70, 70), (250, 200, 50), (240, 240, 245), (95, 105, 125), (70, 120, 230)
 out, starts, dur = sys.argv[1], [float(x) for x in sys.argv[2].split(",")], float(sys.argv[3])
-assert len(starts) == 7 and starts == sorted(starts), "need 7 ascending scene starts"
+assert starts == sorted(starts), "scene starts must ascend"
 rng = np.random.default_rng(7)
 PX, PY, PS = rng.random(400), rng.random(400), rng.random(400)  # particle seeds
 
@@ -46,7 +46,7 @@ def particles(img, n, t, tgt, y0=340, spread=360, spd=0.55, col=WHITE):
         sx = 540 + (PX[i] - 0.5) * 2 * spread
         cv2.circle(img, (int(sx + (tx - sx) * e), int(y0 + (ty - y0) * e)), 5, col, -1, cv2.LINE_AA)
 
-def globe(img, t):
+def globe(img, t, ok=False):
     cx, cy, R = 540, 560, 215
     for lat in range(-80, 81, 10):
         for lon in range(0, 360, 10):
@@ -56,7 +56,7 @@ def globe(img, t):
             ph = math.radians(lat)
             x, y = cx + R * math.cos(ph) * math.sin(l), cy - R * math.sin(ph)
             land = (math.sin(lon * 0.37 + lat * 0.21) + math.sin(lon * 0.11 - lat * 0.4)) > 0.2
-            cv2.circle(img, (int(x), int(y)), max(2, int(5 * math.cos(l) * math.cos(ph) + 1)), RED if land else (110, 60, 70), -1, cv2.LINE_AA)
+            cv2.circle(img, (int(x), int(y)), max(2, int(5 * math.cos(l) * math.cos(ph) + 1)), (GREEN if ok else RED) if land else (60, 110, 90) if ok else (110, 60, 70), -1, cv2.LINE_AA)
 
 def s1(img, t):  # global outage
     globe(img, t)
@@ -138,7 +138,13 @@ def s7(img, t):
     for i in range(10):
         rack(img, 540 + (i % 5 - 2) * 190, 560 + (i // 5) * 200, "ok", t=t)
 
-SCENES = [s1, s2, s3, s4, s5, s6, s7]
+def s8(img, t):  # back to normal: green globe, bouncing "link below" arrow
+    globe(img, t, ok=True)
+    y = 850 + int(18 * abs(math.sin(t * 3)))
+    cv2.polylines(img, [np.array([[500, y - 30], [540, y + 10], [580, y - 30]])], False, GREEN, 12, cv2.LINE_AA)
+
+SCENES = [s1, s2, s7, s8]  # globe outage -> servers fail -> servers back -> link to status page
+N = len(SCENES)
 
 def scene_img(k, t):
     img = BG.copy()
@@ -146,7 +152,7 @@ def scene_img(k, t):
     return img
 
 def frame(t):
-    k = max(i for i in range(7) if t >= starts[i])
+    k = max(i for i in range(N) if t >= starts[i])
     img = scene_img(k, t)
     if k and t - starts[k] < 0.3:  # short crossfade from previous scene
         a = (t - starts[k]) / 0.3
@@ -154,7 +160,7 @@ def frame(t):
     return img
 
 if sys.argv[4:] == ["preview"]:
-    ts = [s + 3.5 for s in starts]
+    ts = [s + 3.5 for s in starts] + [starts[0] + 1] * (8 - len(starts))
     tiles = [cv2.resize(frame(min(t, dur - 0.1))[:1100], (360, 440)) for t in ts]
     cv2.imwrite(out, cv2.cvtColor(np.vstack([np.hstack(tiles[:4]), np.hstack(tiles[4:] + [np.zeros_like(tiles[0])])]), cv2.COLOR_RGB2BGR))
 else:
