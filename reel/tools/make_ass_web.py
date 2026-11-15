@@ -39,8 +39,8 @@ for k, (small, big) in enumerate(heads):
     s, e = STARTS[k], (STARTS[k + 1] if k < 6 else D)
     add(1, "Small", r"{\an8\pos(540,%d)\fad(150,0)}%s" % (200, small), s, e)
     add(1, "Big", r"{\an8\pos(540,%d)\fad(200,0)}{\c&HFFFFFF&}%s" % (290, big), s, e)
-add(1, "Handle", r"{\an1\pos(50,1790)}@mgsina.tech", STARTS[1])
-add(1, "Tag", r"{\an1\pos(50,1850)}آیتی ساده", STARTS[1])
+add(1, "Handle", r"{\an1\pos(205,1790)}@mgsina.tech", 0)
+add(1, "Tag", r"{\an1\pos(205,1850)}آیتی ساده", 0)
 
 def words_events(s, e, text, n=3):
     w = text.split()
