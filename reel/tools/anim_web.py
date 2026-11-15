@@ -4,17 +4,17 @@ import sys, math, subprocess
 import numpy as np, cv2
 
 W, H, FPS = 1080, 1920, 30
-MAG, WHITE, PANEL, GREY, GREEN = (224, 36, 117), (245, 245, 250), (36, 22, 52), (120, 105, 140), (60, 220, 140)
+MAG, WHITE, PANEL, GREY, GREEN = (224, 36, 117), (245, 245, 250), (22, 30, 84), (110, 120, 160), (60, 220, 140)
 out, starts, dur = sys.argv[1], [float(x) for x in sys.argv[2].split(",")], float(sys.argv[3])
 assert len(starts) == 7 and starts == sorted(starts), "need 7 ascending scene starts"
 FONT = cv2.FONT_HERSHEY_DUPLEX
 
 def backdrop():
     y = np.linspace(0, 1, H)[:, None, None]
-    bg = np.broadcast_to(np.array([14, 8, 24.]) * (1 - y) + np.array([40, 10, 48.]) * y, (H, W, 3)).copy()
+    bg = np.broadcast_to(np.array([10, 18, 64.]) * (1 - y) + np.array([6, 10, 40.]) * y, (H, W, 3)).copy()
     yy, xx = np.mgrid[0:H, 0:W]
-    for cx, cy, r, col in [(880, 420, 460, MAG), (140, 1350, 420, (90, 60, 200))]:
-        bg += np.exp(-((xx - cx) ** 2 + (yy - cy) ** 2) / (2 * r ** 2))[..., None] * np.array(col) * 0.28
+    for cx, cy, r, col in [(900, 420, 440, MAG), (140, 1350, 420, (50, 90, 230))]:
+        bg += np.exp(-((xx - cx) ** 2 + (yy - cy) ** 2) / (2 * r ** 2))[..., None] * np.array(col) * 0.24
     bg = np.where(((xx % 90 == 0) | (yy % 90 == 0))[..., None], bg + 9, bg)
     return np.clip(bg, 0, 255).astype(np.uint8)
 BG = backdrop()
@@ -49,18 +49,19 @@ def nodes(img, t):  # drifting network dots, shared by all scenes
     for i, p in enumerate(pts):
         for q in pts[i + 1:]:
             if (p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2 < 170 ** 2:
-                cv2.line(img, p, q, (70, 40, 90), 1, cv2.LINE_AA)
-        cv2.circle(img, p, 4, (150, 70, 150), -1, cv2.LINE_AA)
+                cv2.line(img, p, q, (40, 64, 130), 1, cv2.LINE_AA)
+        cv2.circle(img, p, 4, (110, 90, 190), -1, cv2.LINE_AA)
 
-def s0(img, t):  # title card: pulsing rings behind the logo (logo is overlaid by ffmpeg)
-    for k in range(3):
-        r = int(255 + ((t * 70 + k * 45) % 130))
-        cv2.circle(img, (540, 840), r, tuple(int(c * (1 - (r - 255) / 130)) for c in MAG), 3, cv2.LINE_AA)
-    cv2.circle(img, (540, 840), 250, PANEL, -1, cv2.LINE_AA)
+_yy, _xx = np.mgrid[0:H, 0:W]
+HALO = np.exp(-((_xx - 540) ** 2 + (_yy - 600) ** 2) / (2 * 300.0 ** 2)).astype(np.float32)
+def s0(img, t):  # cover-style title card: magenta halo + ring behind the portrait (portrait overlaid by ffmpeg)
+    g = HALO[..., None] * np.array(MAG, np.float32) * (0.55 + 0.08 * math.sin(t * 3))
+    img[:] = np.clip(img.astype(np.float32) + g, 0, 255).astype(np.uint8)
+    cv2.circle(img, (540, 600), 330, MAG, 4, cv2.LINE_AA)
 
 def s1(img, t):  # Search Console: URL submitted, pages indexed, clicks rising
     rr(img, 110, 620, 970, 1230, 28, PANEL); rr(img, 110, 620, 970, 1230, 28, GREY, 2)
-    rr(img, 150, 660, 930, 730, 34, (60, 40, 80))
+    rr(img, 150, 660, 930, 730, 34, (40, 52, 110))
     text(img, "yoursite.com", 190, 708, 1.1)
     cv2.circle(img, (880, 695), 18, MAG, 4, cv2.LINE_AA); cv2.line(img, (893, 708), (906, 721), MAG, 5, cv2.LINE_AA)
     for i in range(4):

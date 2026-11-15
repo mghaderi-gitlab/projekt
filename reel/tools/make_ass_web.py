@@ -35,7 +35,11 @@ def add(layer, style, text, s=0.0, e=D):
 
 add(0, "Shape", r"{\an7\pos(40,175)\p1\1c&H7524E0&\bord0}" + rrect(130, 76, 20))
 add(1, "Badge", r"{\an5\pos(105,213)}FA")
+add(1, "Small", r"{\an8\pos(540,1030)\fad(300,0)}سایتتون رو راه انداختید؟", 0, STARTS[1])
+add(1, "Big", r"{\an8\pos(540,1085)\fad(400,0)}{\c" + MAG_BGR + r"}۵ کار ضروری{\c&HFFFFFF&}\Nبعد از لانچ", 0, STARTS[1])
 for k, (small, big) in enumerate(heads):
+    if k == 0:
+        continue  # title card uses the cover-style block above
     s, e = STARTS[k], (STARTS[k + 1] if k < 6 else D)
     add(1, "Small", r"{\an8\pos(540,%d)\fad(150,0)}%s" % (200, small), s, e)
     add(1, "Big", r"{\an8\pos(540,%d)\fad(200,0)}{\c&HFFFFFF&}%s" % (290, big), s, e)
@@ -66,7 +70,7 @@ Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour,
 Style: Shape,Vazirmatn,20,&HFFFFFF&,&HFFFFFF&,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,-1
 Style: Badge,Vazirmatn Black,46,&HFFFFFF&,&HFFFFFF&,&H00000000,&H00000000,1,0,0,0,100,100,0,0,1,0,0,5,0,0,0,-1
 Style: Small,Vazirmatn,46,&HFFFFFF&,&HFFFFFF&,&H80000000,&H00000000,0,0,0,0,100,100,0,0,1,0,3,8,0,0,0,-1
-Style: Big,Vazirmatn Black,86,&HFFFFFF&,&HFFFFFF&,&H00000000,&H00000000,1,0,0,0,100,100,0,0,1,6,4,8,40,40,0,-1
+Style: Big,Vazirmatn Black,104,&HFFFFFF&,&HFFFFFF&,&H00000000,&H00000000,1,0,0,0,100,100,0,0,1,6,4,8,40,40,0,-1
 Style: Handle,Vazirmatn Black,50,&HFFFFFF&,&HFFFFFF&,&H00000000,&H00000000,1,0,0,0,100,100,0,0,1,4,3,1,0,0,0,-1
 Style: Tag,Vazirmatn,38,&HFFFFFF&,&HFFFFFF&,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,3,2,1,0,0,0,-1
 Style: Cap,Vazirmatn Black,78,&HFFFFFF&,&HFFFFFF&,&H00000000,&H00000000,1,0,0,0,100,100,0,0,1,8,0,2,60,60,430,-1
